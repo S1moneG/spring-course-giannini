@@ -1,6 +1,6 @@
-package service;
+package com.tasgroup.spring_course.service;
 
-import dto.GetUserResponseDto;
+import com.tasgroup.spring_course.dto.GetUserResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
