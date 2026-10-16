@@ -1,10 +1,8 @@
 package com.tasgroup.spring_course.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 
 @Getter
