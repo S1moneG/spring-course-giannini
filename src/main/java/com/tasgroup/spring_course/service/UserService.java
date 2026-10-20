@@ -1,15 +1,14 @@
 package com.tasgroup.spring_course.service;
 
-import com.tasgroup.spring_course.model.CreateUserRequest;
 import com.tasgroup.spring_course.model.CreateUserResponse;
 import com.tasgroup.spring_course.model.GetUserResponse;
+import com.tasgroup.spring_course.service.dto.CreateUserDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 @Service
 public class UserService {
-
 
     public GetUserResponse getUser(String username) {
         GetUserResponse user = new GetUserResponse();
@@ -24,20 +23,21 @@ public class UserService {
         return user;
     }
 
-    public CreateUserResponse createUser(CreateUserRequest createUserRequest) {
-        CreateUserResponse createdUser = new CreateUserResponse();
+    public CreateUserResponse createUser(CreateUserDto createUserRequest) {
+        CreateUserResponse createUserResponse = new CreateUserResponse();
+
+        createUserResponse.setDataCreazione(LocalDate.now());
 
         if(createUserRequest.getUsername() != null) {
-            createdUser.setUsername(createUserRequest.getUsername());
+            createUserResponse.setUsername(createUserRequest.getUsername());
         }
-        createdUser.setDataCreazione(LocalDate.now());
         if(createUserRequest.getRole() != null) {
-            createdUser.setRole(createUserRequest.getRole());
+            createUserResponse.setRole(createUserRequest.getRole());
         }
-        if(createUserRequest.getPaeseResidenza() != null) {
-            createdUser.setPaeseResidenza(createUserRequest.getPaeseResidenza());
+        if(createUserRequest.getResidenza() != null) {
+            createUserResponse.setResidenza(createUserRequest.getResidenza());
         }
 
-        return createdUser;
+        return createUserResponse;
     }
 }

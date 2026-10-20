@@ -3,6 +3,9 @@ package com.tasgroup.spring_course.controller;
 import com.tasgroup.spring_course.model.CreateUserRequest;
 import com.tasgroup.spring_course.model.CreateUserResponse;
 import com.tasgroup.spring_course.model.GetUserResponse;
+import com.tasgroup.spring_course.service.dto.CreateUserDto;
+import com.tasgroup.spring_course.service.mapper.CreateUserMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +14,10 @@ import com.tasgroup.spring_course.service.UserService;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
+
+    private final CreateUserMapper createUserMapper;
 
     @Autowired
     private UserService userService;
@@ -24,7 +30,8 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<CreateUserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
-        CreateUserResponse createUserResponse = userService.createUser(createUserRequest);
+        CreateUserDto createUserDto = createUserMapper.createUserDtoMapper(createUserRequest);
+        CreateUserResponse createUserResponse = userService.createUser(createUserDto);
         return new ResponseEntity<>(createUserResponse, HttpStatus.OK);
     }
 }

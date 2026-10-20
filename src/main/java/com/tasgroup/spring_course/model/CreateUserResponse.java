@@ -12,6 +12,8 @@ public class CreateUserResponse {
 
     private String role;
 
-    private String paeseResidenza;
+    private String residenza;
+
+    private LocalDate dataDiNascita;
 
 }
