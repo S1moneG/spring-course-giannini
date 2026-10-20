@@ -1,8 +1,8 @@
 package com.tasgroup.spring_course.service;
 
-import com.tasgroup.spring_course.dto.CreateUserRequestDto;
-import com.tasgroup.spring_course.dto.CreateUserResponseDto;
-import com.tasgroup.spring_course.dto.GetUserResponseDto;
+import com.tasgroup.spring_course.model.CreateUserRequest;
+import com.tasgroup.spring_course.model.CreateUserResponse;
+import com.tasgroup.spring_course.model.GetUserResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,8 +11,8 @@ import java.time.LocalDate;
 public class UserService {
 
 
-    public GetUserResponseDto getUser(String username) {
-        GetUserResponseDto user = new GetUserResponseDto();
+    public GetUserResponse getUser(String username) {
+        GetUserResponse user = new GetUserResponse();
         user.setUsername(username);
 
         LocalDate currentDate = LocalDate.now();
@@ -24,8 +24,8 @@ public class UserService {
         return user;
     }
 
-    public CreateUserResponseDto createUser(CreateUserRequestDto createUserRequest) {
-        CreateUserResponseDto createdUser = new CreateUserResponseDto();
+    public CreateUserResponse createUser(CreateUserRequest createUserRequest) {
+        CreateUserResponse createdUser = new CreateUserResponse();
 
         if(createUserRequest.getUsername() != null) {
             createdUser.setUsername(createUserRequest.getUsername());

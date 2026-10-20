@@ -1,8 +1,8 @@
 package com.tasgroup.spring_course.controller;
 
-import com.tasgroup.spring_course.dto.CreateUserRequestDto;
-import com.tasgroup.spring_course.dto.CreateUserResponseDto;
-import com.tasgroup.spring_course.dto.GetUserResponseDto;
+import com.tasgroup.spring_course.model.CreateUserRequest;
+import com.tasgroup.spring_course.model.CreateUserResponse;
+import com.tasgroup.spring_course.model.GetUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +17,14 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<GetUserResponseDto> getUser(@PathVariable String username) {
-        GetUserResponseDto userResponse = userService.getUser(username);
+    public ResponseEntity<GetUserResponse> getUser(@PathVariable String username) {
+        GetUserResponse userResponse = userService.getUser(username);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateUserResponseDto> createUser(@RequestBody CreateUserRequestDto createUserRequest) {
-        CreateUserResponseDto createUserResponseDto = userService.createUser(createUserRequest);
-        return new ResponseEntity<>(createUserResponseDto, HttpStatus.OK);
+    public ResponseEntity<CreateUserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
+        CreateUserResponse createUserResponse = userService.createUser(createUserRequest);
+        return new ResponseEntity<>(createUserResponse, HttpStatus.OK);
     }
 }
