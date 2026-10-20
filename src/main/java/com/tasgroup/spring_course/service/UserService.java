@@ -3,12 +3,18 @@ package com.tasgroup.spring_course.service;
 import com.tasgroup.spring_course.model.CreateUserResponse;
 import com.tasgroup.spring_course.model.GetUserResponse;
 import com.tasgroup.spring_course.service.dto.CreateUserDto;
+import com.tasgroup.spring_course.service.mapper.CreateUserMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
+@AllArgsConstructor
 public class UserService {
+
+    private final CreateUserMapper createUserMapper;
 
     public GetUserResponse getUser(String username) {
         GetUserResponse user = new GetUserResponse();
@@ -23,21 +29,10 @@ public class UserService {
         return user;
     }
 
-    public CreateUserResponse createUser(CreateUserDto createUserRequest) {
-        CreateUserResponse createUserResponse = new CreateUserResponse();
+    public CreateUserResponse createUser(CreateUserDto createUserDto) {
 
-        createUserResponse.setDataCreazione(LocalDate.now());
+        createUserDto.setDataCreazione(LocalDateTime.now());
 
-        if(createUserRequest.getUsername() != null) {
-            createUserResponse.setUsername(createUserRequest.getUsername());
-        }
-        if(createUserRequest.getRole() != null) {
-            createUserResponse.setRole(createUserRequest.getRole());
-        }
-        if(createUserRequest.getResidenza() != null) {
-            createUserResponse.setResidenza(createUserRequest.getResidenza());
-        }
-
-        return createUserResponse;
+        return createUserMapper.createUserResponseMapper(createUserDto);
     }
 }

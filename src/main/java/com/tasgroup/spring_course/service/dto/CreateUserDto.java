@@ -3,6 +3,7 @@ package com.tasgroup.spring_course.service.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class CreateUserDto {
@@ -11,7 +12,7 @@ public class CreateUserDto {
 
     private String password;
 
-    private LocalDate dataCreazione;
+    private LocalDateTime dataCreazione;
 
     private String role;
 

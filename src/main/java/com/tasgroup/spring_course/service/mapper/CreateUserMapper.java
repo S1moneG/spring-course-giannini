@@ -1,6 +1,7 @@
 package com.tasgroup.spring_course.service.mapper;
 
 import com.tasgroup.spring_course.model.CreateUserRequest;
+import com.tasgroup.spring_course.model.CreateUserResponse;
 import com.tasgroup.spring_course.service.dto.CreateUserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,5 +19,7 @@ public abstract class CreateUserMapper {
     public String mapResidenza(String paese, String citta) {
         return paese + " - " + citta;
     }
+
+    public abstract CreateUserResponse createUserResponseMapper(CreateUserDto createUserDto);
 
 }
