@@ -1,4 +1,4 @@
-package com.tasgroup.spring_course.model;
+package com.tasgroup.spring_course.controller.model;
 
 import lombok.Data;
 

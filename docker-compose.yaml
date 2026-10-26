@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16
+
+    environment:
+      POSTGRES_DB: local_db_spring_course
+      POSTGRES_USER: simoneg
+      POSTGRES_PASSWORD: simoneg
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - dati-local_db_spring_course:/var/lib/postgresql/data
+
+volumes:
+  dati-local_db_spring_course:

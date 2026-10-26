@@ -1,8 +1,8 @@
 package com.tasgroup.spring_course.controller;
 
-import com.tasgroup.spring_course.model.CreateUserRequest;
-import com.tasgroup.spring_course.model.CreateUserResponse;
-import com.tasgroup.spring_course.model.GetUserResponse;
+import com.tasgroup.spring_course.controller.model.CreateUserRequest;
+import com.tasgroup.spring_course.controller.model.CreateUserResponse;
+import com.tasgroup.spring_course.controller.model.GetUserResponse;
 import com.tasgroup.spring_course.service.dto.CreateUserDto;
 import com.tasgroup.spring_course.service.mapper.CreateUserMapper;
 import lombok.RequiredArgsConstructor;

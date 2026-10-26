@@ -1,7 +1,7 @@
 package com.tasgroup.spring_course.service.mapper;
 
-import com.tasgroup.spring_course.model.CreateUserRequest;
-import com.tasgroup.spring_course.model.CreateUserResponse;
+import com.tasgroup.spring_course.controller.model.CreateUserRequest;
+import com.tasgroup.spring_course.controller.model.CreateUserResponse;
 import com.tasgroup.spring_course.service.dto.CreateUserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
