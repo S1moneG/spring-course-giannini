@@ -2,8 +2,12 @@ package com.tasgroup.spring_course.service;
 
 import com.tasgroup.spring_course.controller.model.CreateUserResponse;
 import com.tasgroup.spring_course.controller.model.GetUserResponse;
+import com.tasgroup.spring_course.repository.UserRepository;
+import com.tasgroup.spring_course.repository.model.UserEntity;
 import com.tasgroup.spring_course.service.dto.CreateUserDto;
+import com.tasgroup.spring_course.service.dto.GetUserRequestDto;
 import com.tasgroup.spring_course.service.mapper.CreateUserMapper;
+import com.tasgroup.spring_course.service.mapper.GetUserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,23 +19,38 @@ import java.time.LocalDateTime;
 public class UserService {
 
     private final CreateUserMapper createUserMapper;
+    private final GetUserMapper getUserMapper;
+
+    private  final UserRepository userRepository;
 
     public GetUserResponse getUser(String username) {
-        GetUserResponse user = new GetUserResponse();
-        user.setUsername(username);
+        GetUserResponse userResponse;
+        if(userRepository.findByUsername(username).isPresent()) {
+            UserEntity user = userRepository.findByUsername(username).get();
+            GetUserRequestDto getUserRequestDto = getUserMapper.getUserDtoMapper(user);
+            userResponse = getUserMapper.getUserResponseMapper(getUserRequestDto);
+        } else {
+            userResponse = new GetUserResponse();
+            userResponse.setUsername(username);
 
-        LocalDate currentDate = LocalDate.now();
+            LocalDate currentDate = LocalDate.now();
 
-        user.setDataCreazione(currentDate);
-        user.setRole("Admin");
-        user.setPaeseResidenza("Italy");
-
-        return user;
+            userResponse.setDataCreazione(currentDate);
+            userResponse.setRole("Admin");
+            userResponse.setPaeseResidenza("Italy");
+        }
+        return userResponse;
     }
 
     public CreateUserResponse createUser(CreateUserDto createUserDto) {
 
-        createUserDto.setDataCreazione(LocalDateTime.now());
+        UserEntity userEntityInsert = createUserMapper.createUserEntityMapper(createUserDto);
+        userRepository.save(userEntityInsert);
+
+        //TO-DO: aggiungere controlli + exceptionHandler dalla lezione4
+        UserEntity userEntityRetrived = userRepository.findByUsernameRole(createUserDto.getUsername(), createUserDto.getRole()).get();
+
+        createUserDto.setDataCreazione(userEntityRetrived.getDataCreazione());
 
         return createUserMapper.createUserResponseMapper(createUserDto);
     }
