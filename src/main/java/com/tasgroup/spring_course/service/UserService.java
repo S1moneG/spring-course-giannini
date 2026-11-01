@@ -9,10 +9,13 @@ import com.tasgroup.spring_course.service.dto.GetUserRequestDto;
 import com.tasgroup.spring_course.service.mapper.CreateUserMapper;
 import com.tasgroup.spring_course.service.mapper.GetUserMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -53,5 +56,15 @@ public class UserService {
         createUserDto.setDataCreazione(userEntityRetrived.getDataCreazione());
 
         return createUserMapper.createUserResponseMapper(createUserDto);
+    }
+
+    public ResponseEntity<String> deleteUser(String username) {
+        Optional<UserEntity> userOptional = userRepository.findByUsername(username);
+        if(userOptional.isPresent()) {
+            userRepository.deleteById(userOptional.get().getId());
+            return new ResponseEntity<>("Rimosso user: " + username, HttpStatus.OK);
+        } else {
+            return  new ResponseEntity<>("User: " + username + " non esiste", HttpStatus.NOT_FOUND);
+        }
     }
 }

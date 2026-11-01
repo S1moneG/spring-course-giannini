@@ -23,5 +23,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     )
     Optional<UserEntity> findByUsernameRole(String username, String role);
 
+    void deleteByUsername(String username);
+
 
 }
