@@ -5,6 +5,7 @@ import com.tasgroup.spring_course.controller.model.CreateUserResponse;
 import com.tasgroup.spring_course.controller.model.GetUserResponse;
 import com.tasgroup.spring_course.service.dto.CreateUserDto;
 import com.tasgroup.spring_course.service.mapper.CreateUserMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateUserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
         CreateUserDto createUserDto = createUserMapper.createUserDtoMapperFromRequest(createUserRequest);
         CreateUserResponse createUserResponse = userService.createUser(createUserDto);
 
