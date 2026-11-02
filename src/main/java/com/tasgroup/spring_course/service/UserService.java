@@ -2,6 +2,7 @@ package com.tasgroup.spring_course.service;
 
 import com.tasgroup.spring_course.controller.model.CreateUserResponse;
 import com.tasgroup.spring_course.controller.model.GetUserResponse;
+import com.tasgroup.spring_course.exception.MyAppException;
 import com.tasgroup.spring_course.repository.UserRepository;
 import com.tasgroup.spring_course.repository.model.UserEntity;
 import com.tasgroup.spring_course.service.dto.CreateUserDto;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -28,20 +28,9 @@ public class UserService {
 
     public GetUserResponse getUser(String username) {
         GetUserResponse userResponse;
-        if(userRepository.findByUsername(username).isPresent()) {
-            UserEntity user = userRepository.findByUsername(username).get();
-            GetUserRequestDto getUserRequestDto = getUserMapper.getUserDtoMapper(user);
-            userResponse = getUserMapper.getUserResponseMapper(getUserRequestDto);
-        } else {
-            userResponse = new GetUserResponse();
-            userResponse.setUsername(username);
-
-            LocalDate currentDate = LocalDate.now();
-
-            userResponse.setDataCreazione(currentDate);
-            userResponse.setRole("Admin");
-            userResponse.setPaeseResidenza("Italy");
-        }
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(()->new MyAppException("User: " + username + " non trovato", HttpStatus.NOT_FOUND));
+        GetUserRequestDto getUserRequestDto = getUserMapper.getUserDtoMapper(user);
+        userResponse = getUserMapper.getUserResponseMapper(getUserRequestDto);
         return userResponse;
     }
 
