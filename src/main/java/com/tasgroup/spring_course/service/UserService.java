@@ -24,39 +24,61 @@ public class UserService {
 
     private final CreateUserMapper createUserMapper;
     private final GetUserMapper getUserMapper;
-
     private  final UserRepository userRepository;
 
     public GetUserResponse getUser(String username) {
+
         GetUserResponse userResponse;
+
         UserEntity user = userRepository.findByUsername(username).
                 orElseThrow(()->new MyAppException("User: " + username + " non trovato", HttpStatus.NOT_FOUND));
+
         GetUserRequestDto getUserRequestDto = getUserMapper.getUserDtoMapper(user);
         userResponse = getUserMapper.getUserResponseMapper(getUserRequestDto);
         return userResponse;
     }
 
-    public CreateUserResponse createUser(CreateUserDto createUserDto) {
+    public ResponseEntity<CreateUserResponse> createUser(CreateUserDto createUserDto) {
 
         UserEntity userEntityInsert = createUserMapper.createUserEntityMapper(createUserDto);
-        userRepository.save(userEntityInsert);
 
-        //TO-DO: aggiungere controlli + exceptionHandler dalla lezione4
-        UserEntity userEntityRetrived = userRepository.findByUsernameRole(createUserDto.getUsername(), createUserDto.getRole()).get();
+        if (userRepository.findByUsername(createUserDto.getUsername()).isPresent()) {
 
-        createUserDto.setDataCreazione(userEntityRetrived.getDataCreazione());
+            log.error("User '{}' è gia presente nel db", createUserDto.getUsername());
 
-        return createUserMapper.createUserResponseMapper(createUserDto);
+            throw new MyAppException("Username: " + createUserDto.getUsername() + " non è disponibile", HttpStatus.BAD_REQUEST);
+        } else {
+
+            userRepository.save(userEntityInsert);
+
+            UserEntity userEntityRetrived = userRepository.findByUsernameRole(createUserDto.getUsername(), createUserDto.getRole()).
+                    orElseThrow(()->new MyAppException(
+                            "User: " +
+                                    createUserDto.getUsername() +
+                            " con Role: " +
+                                    createUserDto.getRole() +
+                            " non trovato",
+                            HttpStatus.INTERNAL_SERVER_ERROR
+                    ));
+
+            createUserDto.setDataCreazione(userEntityRetrived.getDataCreazione());
+            CreateUserResponse createUserResponse = createUserMapper.createUserResponseMapper(createUserDto);
+
+            return new ResponseEntity<>(createUserResponse, HttpStatus.CREATED);
+        }
     }
 
     public ResponseEntity<String> deleteUser(String username) {
+
         Optional<UserEntity> userOptional = userRepository.findByUsername(username);
-        if(userOptional.isPresent()) {
+        if (userOptional.isPresent()) {
+
             userRepository.deleteById(userOptional.get().getId());
             return new ResponseEntity<>("Rimosso user: " + username, HttpStatus.OK);
         } else {
+
             log.error("User '{}' non trovato", username);
-            return  new ResponseEntity<>("User: " + username + " non esiste", HttpStatus.NOT_FOUND);
+            throw new MyAppException("User: " + username + " non esiste", HttpStatus.NOT_FOUND);
         }
     }
 }

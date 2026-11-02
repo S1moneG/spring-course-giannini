@@ -36,9 +36,8 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
         CreateUserDto createUserDto = createUserMapper.createUserDtoMapperFromRequest(createUserRequest);
-        CreateUserResponse createUserResponse = userService.createUser(createUserDto);
 
-        return new ResponseEntity<>(createUserResponse, HttpStatus.OK);
+        return userService.createUser(createUserDto);
     }
 
     @DeleteMapping("/{username}")
