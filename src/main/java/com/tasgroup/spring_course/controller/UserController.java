@@ -18,6 +18,10 @@ import com.tasgroup.spring_course.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
 
+    /*
+    logger inizializzato senza @Slf4j
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
+    */
     private final CreateUserMapper createUserMapper;
 
     @Autowired

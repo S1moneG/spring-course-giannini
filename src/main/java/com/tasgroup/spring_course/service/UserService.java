@@ -10,15 +10,16 @@ import com.tasgroup.spring_course.service.dto.GetUserRequestDto;
 import com.tasgroup.spring_course.service.mapper.CreateUserMapper;
 import com.tasgroup.spring_course.service.mapper.GetUserMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
 
     private final CreateUserMapper createUserMapper;
@@ -28,7 +29,8 @@ public class UserService {
 
     public GetUserResponse getUser(String username) {
         GetUserResponse userResponse;
-        UserEntity user = userRepository.findByUsername(username).orElseThrow(()->new MyAppException("User: " + username + " non trovato", HttpStatus.NOT_FOUND));
+        UserEntity user = userRepository.findByUsername(username).
+                orElseThrow(()->new MyAppException("User: " + username + " non trovato", HttpStatus.NOT_FOUND));
         GetUserRequestDto getUserRequestDto = getUserMapper.getUserDtoMapper(user);
         userResponse = getUserMapper.getUserResponseMapper(getUserRequestDto);
         return userResponse;
@@ -53,6 +55,7 @@ public class UserService {
             userRepository.deleteById(userOptional.get().getId());
             return new ResponseEntity<>("Rimosso user: " + username, HttpStatus.OK);
         } else {
+            log.error("User '{}' non trovato", username);
             return  new ResponseEntity<>("User: " + username + " non esiste", HttpStatus.NOT_FOUND);
         }
     }
