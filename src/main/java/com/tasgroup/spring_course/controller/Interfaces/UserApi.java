@@ -66,7 +66,7 @@ public interface UserApi {
     @ApiResponses(
             value = {
                     @ApiResponse(
-                            responseCode = "200",
+                            responseCode = "201",
                             description = "User creato correttamente",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -106,4 +106,42 @@ public interface UserApi {
             }
     )
     ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest createUserRequest);
+
+    @Operation(summary = "Delete User", description = "Recupera uno user in base allo username")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "User eliminato con successo",
+                            content = @Content(
+                                    mediaType = MediaType.TEXT_PLAIN_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                Rimosso user: Simone4
+                                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User non trovato",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Not Found",
+                                                  "message": "User: Simone5 non esiste",
+                                                  "path": "/user/Simone5",
+                                                  "status": "404 NOT_FOUND",
+                                                  "timestamp": "2026-11-03T11:29:40.7697717"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
+                    )
+            }
+    )
+    ResponseEntity<String> deleteUser(@PathVariable String username);
 }

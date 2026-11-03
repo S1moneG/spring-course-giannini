@@ -45,6 +45,7 @@ public class UserController implements UserApi {
         return userService.createUser(createUserDto);
     }
 
+    @Override
     @DeleteMapping("/{username}")
     public ResponseEntity<String> deleteUser(@PathVariable String username) {
         return userService.deleteUser(username);
