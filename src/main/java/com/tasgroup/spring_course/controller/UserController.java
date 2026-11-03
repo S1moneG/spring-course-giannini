@@ -6,18 +6,11 @@ import com.tasgroup.spring_course.controller.model.CreateUserResponse;
 import com.tasgroup.spring_course.controller.model.GetUserResponse;
 import com.tasgroup.spring_course.service.dto.CreateUserDto;
 import com.tasgroup.spring_course.service.mapper.CreateUserMapper;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.tasgroup.spring_course.service.UserService;
@@ -44,6 +37,7 @@ public class UserController implements UserApi {
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
+    @Override
     @PostMapping("/create")
     public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
         CreateUserDto createUserDto = createUserMapper.createUserDtoMapperFromRequest(createUserRequest);
