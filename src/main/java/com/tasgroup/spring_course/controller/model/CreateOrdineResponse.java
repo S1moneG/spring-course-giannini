@@ -72,6 +72,7 @@ public class CreateOrdineResponse {
             example = "3455567833",
             type = "string"
     )
+    @NotNull
     private String telefonoCliente;
 
     @Schema(

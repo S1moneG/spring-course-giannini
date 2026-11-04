@@ -12,8 +12,7 @@ public class CreateOrdineRequest {
             example = "Luigi",
             requiredMode = Schema.RequiredMode.REQUIRED,
             minLength = 2,
-            maxLength = 50,
-            type = "string"
+            maxLength = 50
     )
     @NotBlank(message = "il campo nomeCliente è mandatorio")
     @Size(min = 2, max = 50, message = "nomeCliente deve avere lunghezza compresa tra 2-50")
@@ -24,8 +23,7 @@ public class CreateOrdineRequest {
             example = "Verdi",
             requiredMode = Schema.RequiredMode.REQUIRED,
             minLength = 2,
-            maxLength = 50,
-            type = "string"
+            maxLength = 50
     )
     @NotBlank(message = "il campo cognomeCliente è mandatorio")
     @Size(min = 2, max = 50, message = "cognomeCliente deve avere lunghezza compresa tra 2-50")
@@ -35,9 +33,7 @@ public class CreateOrdineRequest {
             description = "Email del cliente",
             example = "simo.g@gmail.com",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            maxLength = 100,
-            type = "string",
-            format = "email"
+            maxLength = 100
     )
     @NotBlank(message = "il campo emailCliente è mandatorio")
     @Email(message = "email inserita non è valida")
@@ -47,8 +43,7 @@ public class CreateOrdineRequest {
     @Schema(
             description = "Telefono del cliente",
             example = "3455567833",
-            maxLength = 20,
-            type = "string"
+            maxLength = 20
     )
     @Size(max = 20, message = "telefonoCliente può avere lunghezza massima 20")
     private String telefonoCliente;
@@ -58,8 +53,7 @@ public class CreateOrdineRequest {
             example = "Via Vittorio 25",
             requiredMode = Schema.RequiredMode.REQUIRED,
             minLength = 5,
-            maxLength = 120,
-            type = "string"
+            maxLength = 120
     )
     @NotBlank(message = "il campo indirizzoSpedizione è mandatorio")
     @Size(min = 5, max = 120, message = "indirizzoSpedizione deve avere lunghezza compresa tra 5-120")
@@ -70,8 +64,7 @@ public class CreateOrdineRequest {
             example = "Milano",
             requiredMode = Schema.RequiredMode.REQUIRED,
             minLength = 2,
-            maxLength = 50,
-            type = "string"
+            maxLength = 50
     )
     @NotBlank(message = "il campo cittaSpedizione è mandatorio")
     @Size(min = 2, max = 50, message = "cittaSpedizione deve avere lunghezza compresa tra 2-50")
@@ -80,9 +73,7 @@ public class CreateOrdineRequest {
     @Schema(
             description = "Cap della citta",
             example = "20019",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            pattern = "^[0-9]{5}$",
-            type = "string"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank(message = "il campo cap è mandatorio")
     @Pattern(regexp = "^[0-9]{5}$", message = "cap inserito non è valido")
@@ -93,8 +84,7 @@ public class CreateOrdineRequest {
             example = "Acqua Sant'Anna",
             requiredMode = Schema.RequiredMode.REQUIRED,
             minLength = 2,
-            maxLength = 80,
-            type = "string"
+            maxLength = 80
     )
     @NotBlank(message = "il campo prodotto è mandatorio")
     @Size(min = 2, max = 80, message = "prodotto deve avere lunghezza compresa tra 2-80")
@@ -105,9 +95,7 @@ public class CreateOrdineRequest {
             example = "Milano",
             requiredMode = Schema.RequiredMode.REQUIRED,
             minimum = "1",
-            maximum = "999",
-            type = "number",
-            format = "integer"
+            maximum = "999"
     )
     @NotNull(message = "il campo quantita è mandatorio")
     @Min(value = 1, message = "quantita non può essere inferiore di 1")
@@ -118,10 +106,7 @@ public class CreateOrdineRequest {
             description = "Citta dove spedire l'ordine",
             example = "Milano",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            minimum = "1",
-            maximum = "999",
-            type = "number",
-            format = "double"
+            minimum = "0.01"
     )
     @NotNull(message = "il campo prezzoUnitario è mandatorio")
     @Positive(message = "prezzoUnitario deve avere un valore positivo")
