@@ -2,10 +2,12 @@ package com.tasgroup.spring_course.service;
 
 import com.tasgroup.spring_course.controller.model.CreateOrdineRequest;
 import com.tasgroup.spring_course.controller.model.CreateOrdineResponse;
+import com.tasgroup.spring_course.controller.model.GetOrdineResponse;
 import com.tasgroup.spring_course.exception.MyAppException;
 import com.tasgroup.spring_course.repository.OrdiniRepository;
 import com.tasgroup.spring_course.repository.model.OrdineEntity;
 import com.tasgroup.spring_course.service.mapper.CreateOrdineMapper;
+import com.tasgroup.spring_course.service.mapper.GetOrdineMapper;
 import com.tasgroup.spring_course.utils.enumerations.OrdineStato;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class OrdiniService {
 
     private final CreateOrdineMapper createOrdineMapper;
+    private final GetOrdineMapper getOrdineMapper;
     private final OrdiniRepository ordiniRepository;
 
     public ResponseEntity<CreateOrdineResponse> createOrdine(@Valid CreateOrdineRequest createOrdineRequest) {
@@ -42,5 +45,13 @@ public class OrdiniService {
         CreateOrdineResponse createOrdineResponse = createOrdineMapper.createOrdineResponseMapper(savedOrdineEntity);
 
         return new ResponseEntity<>(createOrdineResponse, HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<GetOrdineResponse> getOrdine(Long id) {
+        OrdineEntity ordineEntity = ordiniRepository.findById(id).orElseThrow(()-> new MyAppException("Ordine con id: " + id + " non esiste", HttpStatus.NOT_FOUND));
+
+        GetOrdineResponse ordineResponse = getOrdineMapper.getOrdineResponseMapper(ordineEntity);
+
+        return new ResponseEntity<>(ordineResponse, HttpStatus.OK);
     }
 }

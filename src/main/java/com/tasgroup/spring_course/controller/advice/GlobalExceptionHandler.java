@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import tools.jackson.databind.exc.UnrecognizedPropertyException;
 
 import java.time.LocalDateTime;
@@ -53,14 +54,28 @@ public class GlobalExceptionHandler {
             HttpMessageNotReadableException e, HttpServletRequest request) {
 
         String message;
-        if(e.getCause() instanceof UnrecognizedPropertyException) {
-            UnrecognizedPropertyException cause =
-                    (UnrecognizedPropertyException) e.getCause();
+        if(e.getCause() instanceof UnrecognizedPropertyException cause) {
             String campo = cause.getPropertyName();
             message = "Campo: '" + campo + "' non è previsto";
         } else {
             message = "Json non valido";
         }
+
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
+        apiErrorResponse.setMessage(message);
+        apiErrorResponse.setStatus(HttpStatus.BAD_REQUEST);
+        apiErrorResponse.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        apiErrorResponse.setPath(request.getRequestURI());
+        apiErrorResponse.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity.badRequest().body(apiErrorResponse);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException e, HttpServletRequest request) {
+
+        String message = "Il type del campo: '" + e.getPropertyName() + "' è errato";
 
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
         apiErrorResponse.setMessage(message);
