@@ -47,7 +47,7 @@ public class OrdineEntity {
     private String cittaSpedizione;
 
     @Column(nullable = false, length = 5)
-    @Size(min = 5, max = 5)
+    @Pattern(regexp = "^[0-9]{5}$")
     private String cap;
 
     @Column(nullable = false, length = 80)
