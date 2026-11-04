@@ -13,9 +13,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Id del ordine creato",
             example = "1",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "number",
-            format = "long"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotNull
     private Long id;
@@ -23,8 +21,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Codice del ordine creato",
             example = "1",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "string"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private String codiceOrdine;
@@ -42,8 +39,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Nome del cliente",
             example = "Luigi",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "string"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private String nomeCliente;
@@ -51,8 +47,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Cognome del cliente",
             example = "Verdi",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "string"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private String cognomeCliente;
@@ -69,8 +64,7 @@ public class CreateOrdineResponse {
 
     @Schema(
             description = "Telefono del cliente",
-            example = "3455567833",
-            type = "string"
+            example = "3455567833"
     )
     @NotNull
     private String telefonoCliente;
@@ -78,8 +72,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Via dove spedire l'ordine",
             example = "Via Vittorio 25",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "string"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private String indirizzoSpedizione;
@@ -87,8 +80,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Citta dove spedire l'ordine",
             example = "Milano",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "string"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private String cittaSpedizione;
@@ -96,8 +88,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Cap della citta",
             example = "20019",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "string"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private String cap;
@@ -105,8 +96,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Nome del prodotto",
             example = "Acqua Sant'Anna",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "string"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private String prodotto;
@@ -114,9 +104,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Quantita del prodotto",
             example = "1",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "number",
-            format = "integer"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private int quantita;
@@ -124,9 +112,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Prezzo del singolo prodotto",
             example = "20.00",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "number",
-            format = "double"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private double prezzoUnitario;
@@ -134,9 +120,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Prezzo totale del ordine",
             example = "101.1",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "number",
-            format = "double"
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private double totale;
@@ -144,9 +128,7 @@ public class CreateOrdineResponse {
     @Schema(
             description = "Stato del ordine, valori possibili: RICEVUTO, IN_LAVORAZIONE, SPEDITO, ANNULLATO",
             example = "RICEVUTO",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "string"
-
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotBlank
     private OrdineStato stato;
