@@ -73,4 +73,9 @@ public class OrdineEntity {
 
     @Column(nullable = false)
     private LocalDateTime dataOrdine;
+
+    public interface OrdineStatoCountProjection {
+        OrdineStato getStato();
+        Long getNumeroOrdini();
+    }
 }

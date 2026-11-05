@@ -4,6 +4,7 @@ import com.tasgroup.spring_course.controller.advice.model.ApiErrorResponse;
 import com.tasgroup.spring_course.controller.model.CreateOrdineRequest;
 import com.tasgroup.spring_course.controller.model.CreateOrdineResponse;
 import com.tasgroup.spring_course.controller.model.GetOrdineResponse;
+import com.tasgroup.spring_course.repository.model.OrdineEntity;
 import com.tasgroup.spring_course.utils.enumerations.OrdineStato;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -383,4 +384,44 @@ public interface OrdiniApi {
             )
             @RequestBody String newStato
     );
+
+
+
+
+    @Operation(summary = "Get statistiche by stato", description = "Endpoint usato per recuperare il numero totale di ordini per ogni stato")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Statistiche recuperate",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                [
+                                                  {
+                                                    "numeroOrdini": 1,
+                                                    "stato": "SPEDITO"
+                                                  },
+                                                  {
+                                                    "numeroOrdini": 1,
+                                                    "stato": "IN_LAVORAZIONE"
+                                                  },
+                                                  {
+                                                    "numeroOrdini": 2,
+                                                    "stato": "ANNULLATO"
+                                                  },
+                                                  {
+                                                    "numeroOrdini": 1,
+                                                    "stato": "RICEVUTO"
+                                                  }
+                                                ]
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = OrdineEntity.OrdineStatoCountProjection.class)
+                            )
+                    )
+            }
+    )
+    ResponseEntity<List<OrdineEntity.OrdineStatoCountProjection>> getSatisticheOrdineByStato();
 }

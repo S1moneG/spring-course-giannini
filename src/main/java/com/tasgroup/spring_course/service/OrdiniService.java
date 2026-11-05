@@ -122,4 +122,8 @@ public class OrdiniService {
 
         return new ResponseEntity<>(ordineResponse, HttpStatus.OK);
     }
+
+    public ResponseEntity<List<OrdineEntity.OrdineStatoCountProjection>> getStatisticheOrdineByStato() {
+        return new ResponseEntity<>(ordiniRepository.countOrdiniByStato(), HttpStatus.OK);
+    }
 }

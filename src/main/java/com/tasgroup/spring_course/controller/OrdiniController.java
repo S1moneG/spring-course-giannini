@@ -4,6 +4,7 @@ import com.tasgroup.spring_course.controller.Interfaces.OrdiniApi;
 import com.tasgroup.spring_course.controller.model.CreateOrdineRequest;
 import com.tasgroup.spring_course.controller.model.CreateOrdineResponse;
 import com.tasgroup.spring_course.controller.model.GetOrdineResponse;
+import com.tasgroup.spring_course.repository.model.OrdineEntity;
 import com.tasgroup.spring_course.service.OrdiniService;
 import com.tasgroup.spring_course.utils.enumerations.OrdineStato;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,5 +47,11 @@ public class OrdiniController implements OrdiniApi {
     @PatchMapping("/ordini/{id}/stato")
     public ResponseEntity<GetOrdineResponse> patchOrdineStato(@PathVariable Long id, @RequestBody String newStato) {
         return ordiniService.patchOrdineStato(id, newStato);
+    }
+
+    @Override
+    @GetMapping("/ordini/statistiche/stato")
+    public ResponseEntity<List<OrdineEntity.OrdineStatoCountProjection>> getSatisticheOrdineByStato(){
+        return ordiniService.getStatisticheOrdineByStato();
     }
 }
