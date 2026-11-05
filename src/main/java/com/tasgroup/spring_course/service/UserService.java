@@ -38,7 +38,7 @@ public class UserService {
         return userResponse;
     }
 
-    public ResponseEntity<CreateUserResponse> createUser(CreateUserDto createUserDto) {
+    public CreateUserResponse createUser(CreateUserDto createUserDto) {
 
         UserEntity userEntityInsert = createUserMapper.createUserEntityMapper(createUserDto);
 
@@ -62,9 +62,8 @@ public class UserService {
                     ));
 
             createUserDto.setDataCreazione(userEntityRetrived.getDataCreazione());
-            CreateUserResponse createUserResponse = createUserMapper.createUserResponseMapper(createUserDto);
 
-            return new ResponseEntity<>(createUserResponse, HttpStatus.CREATED);
+            return createUserMapper.createUserResponseMapper(createUserDto);
         }
     }
 

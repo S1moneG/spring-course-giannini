@@ -42,7 +42,8 @@ public class UserController implements UserApi {
     public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
         CreateUserDto createUserDto = createUserMapper.createUserDtoMapperFromRequest(createUserRequest);
 
-        return userService.createUser(createUserDto);
+        CreateUserResponse createUserResponse = userService.createUser(createUserDto);
+        return new ResponseEntity<>(createUserResponse, HttpStatus.CREATED);
     }
 
     @Override
