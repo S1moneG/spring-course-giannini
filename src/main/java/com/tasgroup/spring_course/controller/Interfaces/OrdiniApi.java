@@ -1,9 +1,12 @@
 package com.tasgroup.spring_course.controller.Interfaces;
 
+import com.tasgroup.spring_course.controller.advice.model.ApiErrorResponse;
 import com.tasgroup.spring_course.controller.model.CreateOrdineRequest;
 import com.tasgroup.spring_course.controller.model.CreateOrdineResponse;
 import com.tasgroup.spring_course.controller.model.GetOrdineResponse;
+import com.tasgroup.spring_course.utils.enumerations.OrdineStato;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 public interface OrdiniApi {
 
@@ -48,10 +54,175 @@ public interface OrdiniApi {
                                     ),
                                     schema = @Schema(implementation = CreateOrdineResponse.class)
                             )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Il body della request non è valido",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Bad Request",
+                                                  "message": "Il type del campo: 'id' è errato",
+                                                  "path": "/api/ordini/a",
+                                                  "status": "400 BAD_REQUEST",
+                                                  "timestamp": "2026-11-05T14:23:57.5390224"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
                     )
             }
     )
     ResponseEntity<CreateOrdineResponse> postOrdine(@Valid @RequestBody CreateOrdineRequest createOrdineRequest);
 
+    @Operation(summary = "Get Ordine by Id", description = "Endpoint usato per recuperare i dettagli di un ordine tramite id dello stesso")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ordine recuperato correttamente",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                  {
+                                                        "cap": "20019",
+                                                        "cittaSpedizione": "Milano",
+                                                        "codiceOrdine": "4b0893a40d084d648b78651f8f2f19",
+                                                        "cognomeCliente": "Giannini",
+                                                        "dataOrdine": "2026-11-04T16:06:14.632454",
+                                                        "emailCliente": "simo.g@gmail.com",
+                                                        "id": 1,
+                                                        "indirizzoSpedizione": "Via di Vittorio 35",
+                                                        "nomeCliente": "Simone",
+                                                        "prezzoUnitario": 2.5,
+                                                        "prodotto": "Amoniaca Gel",
+                                                        "quantita": 3,
+                                                        "stato": "RICEVUTO",
+                                                        "telefonoCliente": "3457782345",
+                                                        "totale": 7.5
+                                                  }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = GetOrdineResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "campo id non è valido",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Bad Request",
+                                                  "message": "Il type del campo: 'id' è errato",
+                                                  "path": "/api/ordini/a",
+                                                  "status": "400 BAD_REQUEST",
+                                                  "timestamp": "2026-11-05T14:23:57.5390224"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "ordine non trovato",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Not Found",
+                                                  "message": "Ordine con id: 9 non esiste",
+                                                  "path": "/api/ordini/9",
+                                                  "status": "404 NOT_FOUND",
+                                                  "timestamp": "2026-11-05T14:25:43.5384221"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
+                    )
+            }
+    )
     ResponseEntity<GetOrdineResponse> getOrdine(@PathVariable Long id);
+
+    @Operation(summary = "Get Ordini", description = "Endpoint usato per recuperare tutti gli ordini, filtro stato opzionale")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ordine creato correttamente",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                [
+                                                      {
+                                                            "cap": "20019",
+                                                            "cittaSpedizione": "Milano",
+                                                            "codiceOrdine": "4b0893a40d084d648b78651f8f2f19",
+                                                            "cognomeCliente": "Giannini",
+                                                            "dataOrdine": "2026-11-04T16:06:14.632454",
+                                                            "emailCliente": "simo.g@gmail.com",
+                                                            "id": 1,
+                                                            "indirizzoSpedizione": "Via di Vittorio 35",
+                                                            "nomeCliente": "Simone",
+                                                            "prezzoUnitario": 2.5,
+                                                            "prodotto": "Amoniaca Gel",
+                                                            "quantita": 3,
+                                                            "stato": "RICEVUTO",
+                                                            "telefonoCliente": "3457782345",
+                                                            "totale": 7.5
+                                                      },
+                                                      {
+                                                            "cap": "20019",
+                                                            "cittaSpedizione": "Milano",
+                                                            "codiceOrdine": "002bf91bfa954fcaae4c42d9213747",
+                                                            "cognomeCliente": "Giannini",
+                                                            "dataOrdine": "2026-11-04T16:08:22.761407",
+                                                            "emailCliente": "simo.g@gmail.com",
+                                                            "id": 2,
+                                                            "indirizzoSpedizione": "Via di Vittorio 35",
+                                                            "nomeCliente": "Simone",
+                                                            "prezzoUnitario": 2.5,
+                                                            "prodotto": "Amoniaca Gel",
+                                                            "quantita": 4,
+                                                            "stato": "RICEVUTO",
+                                                            "telefonoCliente": null,
+                                                            "totale": 10.0
+                                                      }
+                                                  ]
+                                            """
+                                    ),
+                                    schema = @Schema(type = "array", implementation = GetOrdineResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "il campo stato non ha un valore presente nel ENUM",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Bad Request",
+                                                  "message": "Il campo: 'stato' ha un valore non previsto",
+                                                  "path": "/api/ordini",
+                                                  "status": "400 BAD_REQUEST",
+                                                  "timestamp": "2026-11-05T14:27:10.2882007"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
+                    )
+            }
+    )
+    ResponseEntity<List<GetOrdineResponse>> getOrdini(@RequestParam OrdineStato stato);
 }

@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -53,5 +56,27 @@ public class OrdiniService {
         GetOrdineResponse ordineResponse = getOrdineMapper.getOrdineResponseMapper(ordineEntity);
 
         return new ResponseEntity<>(ordineResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<GetOrdineResponse>> getOrdini(OrdineStato stato) {
+
+        List<OrdineEntity> ordiniEntities;
+
+        if(stato == null) {
+            ordiniEntities = ordiniRepository.findAll();
+        } else {
+            ordiniEntities = ordiniRepository.findByStato(stato);
+        }
+
+        List<GetOrdineResponse> ordiniResponse = new ArrayList<>();
+
+        if(!ordiniEntities.isEmpty()) {
+            for(OrdineEntity ordineEntity : ordiniEntities) {
+                GetOrdineResponse singleOrdineResponse = getOrdineMapper.getOrdineResponseMapper(ordineEntity);
+                ordiniResponse.add(singleOrdineResponse);
+            }
+        }
+
+        return new ResponseEntity<>(ordiniResponse, HttpStatus.OK);
     }
 }

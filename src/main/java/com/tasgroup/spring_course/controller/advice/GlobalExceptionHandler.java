@@ -75,7 +75,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(
             MethodArgumentTypeMismatchException e, HttpServletRequest request) {
 
-        String message = "Il type del campo: '" + e.getPropertyName() + "' è errato";
+        Class<?> requiredType = e.getRequiredType();
+
+        String message;
+        if(requiredType != null && requiredType.isEnum()) {
+            message = "Il campo: '" + e.getPropertyName() + "' ha un valore non previsto";
+        } else {
+            message = "Il type del campo: '" + e.getPropertyName() + "' è errato";
+        }
 
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
         apiErrorResponse.setMessage(message);

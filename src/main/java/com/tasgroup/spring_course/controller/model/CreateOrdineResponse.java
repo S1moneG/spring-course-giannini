@@ -126,9 +126,8 @@ public class CreateOrdineResponse {
     private double totale;
 
     @Schema(
-            description = "Stato del ordine, valori possibili: RICEVUTO, IN_LAVORAZIONE, SPEDITO, ANNULLATO",
-            example = "RICEVUTO",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            implementation = OrdineStato.class
     )
     @NotBlank
     private OrdineStato stato;
