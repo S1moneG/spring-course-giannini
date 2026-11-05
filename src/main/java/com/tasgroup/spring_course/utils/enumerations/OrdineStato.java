@@ -4,8 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
         enumAsRef = true,
-        description = "Stato del ordine, valori possibili: RICEVUTO, IN_LAVORAZIONE, SPEDITO, ANNULLATO",
-        example = "RICEVUTO"
+        description = "Stato del ordine, valori possibili: RICEVUTO, IN_LAVORAZIONE, SPEDITO, ANNULLATO"
 )
 public enum OrdineStato {
     RICEVUTO,

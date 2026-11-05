@@ -127,7 +127,8 @@ public class CreateOrdineResponse {
 
     @Schema(
             requiredMode = Schema.RequiredMode.REQUIRED,
-            implementation = OrdineStato.class
+            implementation = OrdineStato.class,
+            examples = "RICEVUTO"
     )
     @NotBlank
     private OrdineStato stato;

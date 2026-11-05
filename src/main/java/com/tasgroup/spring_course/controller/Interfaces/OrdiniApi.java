@@ -78,6 +78,9 @@ public interface OrdiniApi {
     )
     ResponseEntity<CreateOrdineResponse> postOrdine(@Valid @RequestBody CreateOrdineRequest createOrdineRequest);
 
+
+
+
     @Operation(summary = "Get Ordine by Id", description = "Endpoint usato per recuperare i dettagli di un ordine tramite id dello stesso")
     @ApiResponses(
             value = {
@@ -152,6 +155,9 @@ public interface OrdiniApi {
     )
     ResponseEntity<GetOrdineResponse> getOrdine(@PathVariable Long id);
 
+
+
+
     @Operation(summary = "Get Ordini", description = "Endpoint usato per recuperare tutti gli ordini, filtro stato opzionale")
     @ApiResponses(
             value = {
@@ -224,5 +230,157 @@ public interface OrdiniApi {
                     )
             }
     )
-    ResponseEntity<List<GetOrdineResponse>> getOrdini(@RequestParam OrdineStato stato);
+    ResponseEntity<List<GetOrdineResponse>> getOrdini(
+            @Parameter(
+                description = "Id del ordine da recuperare",
+                example = "1",
+                required = true
+            )
+            @RequestParam OrdineStato stato
+    );
+
+
+
+
+    @Operation(summary = "Patch Ordine by Id",
+            description =
+                    """
+                            Endpoint usato per aggiornare stato di un ordine tramite id dello stesso, dettagli sulle transizioni:
+                            • RICEVUTO → IN_LAVORAZIONE oppure ANNULLATO.
+                            • IN_LAVORAZIONE → SPEDITO oppure ANNULLATO.
+                            • SPEDITO e ANNULLATO sono stati finali.
+                    """
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ordine aggiornato correttamente",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                  {
+                                                        "cap": "20019",
+                                                        "cittaSpedizione": "Milano",
+                                                        "codiceOrdine": "4b0893a40d084d648b78651f8f2f19",
+                                                        "cognomeCliente": "Giannini",
+                                                        "dataOrdine": "2026-11-04T16:06:14.632454",
+                                                        "emailCliente": "simo.g@gmail.com",
+                                                        "id": 1,
+                                                        "indirizzoSpedizione": "Via di Vittorio 35",
+                                                        "nomeCliente": "Simone",
+                                                        "prezzoUnitario": 2.5,
+                                                        "prodotto": "Amoniaca Gel",
+                                                        "quantita": 3,
+                                                        "stato": "ANNULLATO",
+                                                        "telefonoCliente": "3457782345",
+                                                        "totale": 7.5
+                                                  }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = GetOrdineResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "campo stato non è valido",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Bad Request",
+                                                  "message": "Il campo: 'stato' ha un valore non previsto",
+                                                  "path": "/api/ordini/1/stato",
+                                                  "status": "400 BAD_REQUEST",
+                                                  "timestamp": "2026-11-05T14:23:57.5390224"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "ordine non trovato",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Not Found",
+                                                  "message": "Ordine con id: 9 non esiste",
+                                                  "path": "/api/ordini/9/stato",
+                                                  "status": "404 NOT_FOUND",
+                                                  "timestamp": "2026-11-05T14:25:43.5384221"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Conflitto tra vecchio e nuovo stato",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Conflict",
+                                                  "message": "Transizione non consentita",
+                                                  "path": "/api/ordini/9/stato",
+                                                  "status": "409 CONFLICT",
+                                                  "timestamp": "2026-11-05T14:25:43.5384221"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Errore non previsto",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    examples = @ExampleObject(
+                                            """
+                                                {
+                                                  "error": "Internal_Error",
+                                                  "message": "Dati sporchi nel DB",
+                                                  "path": "/api/ordini/9/stato",
+                                                  "status": "409 INTERNAL_ERROR",
+                                                  "timestamp": "2026-11-05T14:25:43.5384221"
+                                                }
+                                            """
+                                    ),
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
+                            )
+                    )
+            }
+    )
+    ResponseEntity<GetOrdineResponse> patchOrdineStato(
+            @Parameter(
+                    description = "Id del ordine da aggiornare",
+                    example = "1",
+                    required = true
+            )
+            @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = """
+                                Nuovo stato del ordine, valori accettati:
+                                -IN_LAVORAZIONE
+                                -RICEVUTO
+                                -ANNULLATO
+                            """,
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(
+                                    examples = "ANNULLATO"
+                            )
+                    )
+            )
+            @RequestBody String newStato
+    );
 }
