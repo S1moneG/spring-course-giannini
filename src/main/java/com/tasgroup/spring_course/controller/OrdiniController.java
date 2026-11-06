@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,30 +29,35 @@ public class OrdiniController implements OrdiniApi {
     @Override
     @PostMapping("/ordini")
     public ResponseEntity<CreateOrdineResponse> postOrdine(@Valid @RequestBody CreateOrdineRequest createOrdineRequest) {
-        return ordiniService.createOrdine(createOrdineRequest);
+        CreateOrdineResponse createOrdineResponse = ordiniService.createOrdine(createOrdineRequest);
+        return new ResponseEntity<>(createOrdineResponse, HttpStatus.CREATED);
     }
 
     @Override
     @GetMapping("/ordini/{id}")
     public ResponseEntity<GetOrdineResponse> getOrdine(@PathVariable Long id) {
-        return ordiniService.getOrdine(id);
+        GetOrdineResponse ordineResponse = ordiniService.getOrdine(id);
+        return new ResponseEntity<>(ordineResponse, HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/ordini")
     public ResponseEntity<List<GetOrdineResponse>> getOrdini(@RequestParam(required = false) OrdineStato stato) {
-        return ordiniService.getOrdini(stato);
+        List<GetOrdineResponse> ordiniResponse = ordiniService.getOrdini(stato);
+        return new ResponseEntity<>(ordiniResponse, HttpStatus.OK);
     }
 
     @Override
     @PatchMapping("/ordini/{id}/stato")
     public ResponseEntity<GetOrdineResponse> patchOrdineStato(@PathVariable Long id, @RequestBody String newStato) {
-        return ordiniService.patchOrdineStato(id, newStato);
+        GetOrdineResponse ordineResponse = ordiniService.patchOrdineStato(id, newStato);
+        return new ResponseEntity<>(ordineResponse, HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/ordini/statistiche/stato")
     public ResponseEntity<List<OrdineEntity.OrdineStatoCountProjection>> getSatisticheOrdineByStato(){
-        return ordiniService.getStatisticheOrdineByStato();
+        List<OrdineEntity.OrdineStatoCountProjection> ordineStatoCountProjection = ordiniService.getStatisticheOrdineByStato();
+        return new ResponseEntity<>(ordineStatoCountProjection, HttpStatus.OK);
     }
 }

@@ -12,7 +12,6 @@ import com.tasgroup.spring_course.utils.enumerations.OrdineStato;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +27,7 @@ public class OrdiniService {
     private final GetOrdineMapper getOrdineMapper;
     private final OrdiniRepository ordiniRepository;
 
-    public ResponseEntity<CreateOrdineResponse> createOrdine(@Valid CreateOrdineRequest createOrdineRequest) {
+    public CreateOrdineResponse createOrdine(@Valid CreateOrdineRequest createOrdineRequest) {
         OrdineEntity ordineEntity = createOrdineMapper.createOrdineRequestMapper(createOrdineRequest);
 
         String codiceOrdine = UUID.randomUUID().toString().replace("-", "").substring(0,30);
@@ -44,20 +43,17 @@ public class OrdiniService {
                         "L'ordine: " + codiceOrdine + " non è stato salvato correttamente",
                         HttpStatus.NOT_FOUND)
                 );
-        CreateOrdineResponse createOrdineResponse = createOrdineMapper.createOrdineResponseMapper(savedOrdineEntity);
 
-        return new ResponseEntity<>(createOrdineResponse, HttpStatus.CREATED);
+        return createOrdineMapper.createOrdineResponseMapper(savedOrdineEntity);
     }
 
-    public ResponseEntity<GetOrdineResponse> getOrdine(Long id) {
+    public GetOrdineResponse getOrdine(Long id) {
         OrdineEntity ordineEntity = ordiniRepository.findById(id).orElseThrow(()-> new MyAppException("Ordine con id: " + id + " non esiste", HttpStatus.NOT_FOUND));
 
-        GetOrdineResponse ordineResponse = getOrdineMapper.getOrdineResponseMapper(ordineEntity);
-
-        return new ResponseEntity<>(ordineResponse, HttpStatus.OK);
+        return getOrdineMapper.getOrdineResponseMapper(ordineEntity);
     }
 
-    public ResponseEntity<List<GetOrdineResponse>> getOrdini(OrdineStato stato) {
+    public List<GetOrdineResponse> getOrdini(OrdineStato stato) {
 
         List<OrdineEntity> ordiniEntities;
 
@@ -76,10 +72,10 @@ public class OrdiniService {
             }
         }
 
-        return new ResponseEntity<>(ordiniResponse, HttpStatus.OK);
+        return ordiniResponse;
     }
 
-    public ResponseEntity<GetOrdineResponse> patchOrdineStato(Long id, String newStatoString) {
+    public GetOrdineResponse patchOrdineStato(Long id, String newStatoString) {
         OrdineStato newStato = null;
         try {
             if (!OrdineStato.valueOf(newStatoString).equals(OrdineStato.RICEVUTO)){
@@ -114,16 +110,15 @@ public class OrdiniService {
         }
     }
 
-    public ResponseEntity<GetOrdineResponse> executeUpdateOrdineStato(OrdineEntity ordineEntity, OrdineStato newStato, Long id) {
+    public GetOrdineResponse executeUpdateOrdineStato(OrdineEntity ordineEntity, OrdineStato newStato, Long id) {
         ordineEntity.setStato(newStato);
         ordiniRepository.save(ordineEntity);
         OrdineEntity updatedEntity = ordiniRepository.findById(id).orElseThrow(() -> new MyAppException("Ordine con id: " + id + " non trovato in seguito al update", HttpStatus.NOT_FOUND));
-        GetOrdineResponse ordineResponse = getOrdineMapper.getOrdineResponseMapper(updatedEntity);
 
-        return new ResponseEntity<>(ordineResponse, HttpStatus.OK);
+        return getOrdineMapper.getOrdineResponseMapper(updatedEntity);
     }
 
-    public ResponseEntity<List<OrdineEntity.OrdineStatoCountProjection>> getStatisticheOrdineByStato() {
-        return new ResponseEntity<>(ordiniRepository.countOrdiniByStato(), HttpStatus.OK);
+    public List<OrdineEntity.OrdineStatoCountProjection> getStatisticheOrdineByStato() {
+        return ordiniRepository.countOrdiniByStato();
     }
 }
