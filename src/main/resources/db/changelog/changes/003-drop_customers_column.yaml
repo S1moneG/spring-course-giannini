@@ -1,0 +1,11 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 002
+      author: simoneg
+      changes:
+        - dropColumn:
+            tableName: customers
+            columns:
+              - column:
+                  name: email

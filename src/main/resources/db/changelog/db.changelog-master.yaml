@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: changes/003-drop_customers_column.yaml
+      relativeToChangelogFile: true

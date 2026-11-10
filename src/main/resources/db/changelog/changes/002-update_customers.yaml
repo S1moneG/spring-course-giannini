@@ -1,0 +1,12 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 002
+      author: simoneg
+      changes:
+        - addColumn:
+            tableName: customers
+            columns:
+              - column:
+                  name: email
+                  type: VARCHAR(255)
