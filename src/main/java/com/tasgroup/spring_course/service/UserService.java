@@ -30,6 +30,7 @@ public class UserService {
 
         GetUserResponse userResponse;
 
+        log.info("inizio query findUserByUsername, valore username = {}", username);
         UserEntity user = userRepository.findByUsername(username).
                 orElseThrow(()->new MyAppException("User: " + username + " non trovato", HttpStatus.NOT_FOUND));
 
@@ -49,6 +50,7 @@ public class UserService {
             throw new MyAppException("Username: " + createUserDto.getUsername() + " non è disponibile", HttpStatus.BAD_REQUEST);
         } else {
 
+            log.info("inizio comando sql creazione user, user = {}", userEntityInsert);
             userRepository.save(userEntityInsert);
 
             UserEntity userEntityRetrived = userRepository.findByUsernameRole(createUserDto.getUsername(), createUserDto.getRole()).
@@ -72,6 +74,7 @@ public class UserService {
         Optional<UserEntity> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
 
+            log.info("inizio delete user by id, id = {}", userOptional.get().getId());
             userRepository.deleteById(userOptional.get().getId());
             return new ResponseEntity<>("Rimosso user: " + username, HttpStatus.OK);
         } else {
