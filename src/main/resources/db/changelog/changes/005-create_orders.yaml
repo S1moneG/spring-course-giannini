@@ -1,0 +1,22 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 005
+      author: simoneg
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: total
+                  type: numeric(38,2)
+              - column:
+                  name: customer_id
+                  type: BIGINT

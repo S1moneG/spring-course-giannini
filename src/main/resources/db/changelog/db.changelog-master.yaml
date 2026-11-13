@@ -1,4 +1,19 @@
 databaseChangeLog:
   - include:
+      file: changes/001-create_customers.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/002-update_customers.yaml
+      relativeToChangelogFile: true
+  - include:
       file: changes/003-drop_customers_column.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/004-create_users.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/005-create_orders.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/006-add_foreign_key_customers_orders.yaml
       relativeToChangelogFile: true
