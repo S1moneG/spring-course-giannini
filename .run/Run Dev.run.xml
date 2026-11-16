@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Dev" type="Application" factoryName="Application">
+    <option name="envFilePaths">
+      <option value="$PROJECT_DIR$/config-env/dev.env" />
+    </option>
+    <option name="MAIN_CLASS_NAME" value="com.tasgroup.spring_course.SpringCourseApplication" />
+    <module name="spring-course" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
