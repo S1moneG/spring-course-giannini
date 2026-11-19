@@ -10,66 +10,54 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/catalog/products")
+@RequestMapping("/api/catalog/")
 public class ProductController {
-    private final ProductService service;
 
+    private final ProductService service;
 
     public ProductController(ProductService service) {
         this.service = service;
     }
 
-
-    @PostMapping
+    @PostMapping("/admin/product/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse create(@Valid @RequestBody ProductRequest request) {
-
 
         return service.create(request);
     }
 
-
-    @GetMapping
+    @GetMapping("/public/product/all")
     public List<ProductResponse> findAll() {
         return service.findAll();
     }
 
-
-    @GetMapping("/{id}")
+    @GetMapping("/user/product/{id}")
     public ProductResponse findById(@PathVariable String id) {
         return service.findById(id);
     }
 
-
-    @PutMapping("/{id}")
+    @PutMapping("/admin/product/update/{id}")
     public ProductResponse update(
             @PathVariable String id,
             @Valid @RequestBody ProductRequest request) {
 
-
         return service.update(id, request);
     }
 
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/product/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }
 
-
-    @GetMapping("/category/{category}")
+    @GetMapping("/user/product/category/{category}")
     public List<ProductResponse> findByCategory(@PathVariable String category) {
-
 
         return service.findByCategory(category);
     }
 
-
-    @GetMapping("/search")
-    public List<ProductResponse> searchByName(
-            @RequestParam String name) {
-
+    @GetMapping("/user/product/search")
+    public List<ProductResponse> searchByName(@RequestParam String name) {
 
         return service.searchByName(name);
     }

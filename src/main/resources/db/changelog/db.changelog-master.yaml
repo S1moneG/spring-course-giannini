@@ -17,3 +17,6 @@ databaseChangeLog:
   - include:
       file: changes/006-add_foreign_key_customers_orders.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changes/007-create_app_users.yaml
+      relativeToChangelogFile: true
